@@ -31,32 +31,32 @@ export namespace Device {
 
   export function HasDimmer(device: Device): boolean {
     const dimmer = [Action.StartDimmer];
-    return device.actions.some(r => dimmer.includes(r));
+    return device.actions.some((r) => dimmer.includes(r));
   }
 
   export function HasSeparateDimmers(device: Device): boolean {
     const increase = [Action.StartIncreasingBrightness];
     const decrease = [Action.StartDecreasingBrightness];
-    const hasIncrease = device.actions.some(r => increase.includes(r));
-    const hasDecrease = device.actions.some(r => decrease.includes(r));
+    const hasIncrease = device.actions.some((r) => increase.includes(r));
+    const hasDecrease = device.actions.some((r) => decrease.includes(r));
     return hasIncrease && hasDecrease;
   }
 
   export function CFhasLightbulb(device: Device): boolean {
     const lightbulb = [Action.ToggleLight];
-    return device.actions.some(r => lightbulb.includes(r));
+    return device.actions.some((r) => lightbulb.includes(r));
   }
 
   export function CFhasFan(device: Device): boolean {
     const fan = [Action.SetSpeed];
-    const hasSetSpeed = device.actions.some(r => fan.includes(r));
+    const hasSetSpeed = device.actions.some((r) => fan.includes(r));
     const hasMaxSpeed = device.properties.max_speed !== undefined;
     return hasSetSpeed && hasMaxSpeed;
   }
 
   export function CFhasReverseSwitch(device: Device): boolean {
     const fan = [Action.ToggleDirection];
-    return device.actions.some(r => fan.includes(r));
+    return device.actions.some((r) => fan.includes(r));
   }
 
   export function fanSpeeds(device: Device): number[] {
@@ -74,7 +74,7 @@ export namespace Device {
     }
 
     const values = device.commands
-      .filter(cmd => {
+      .filter((cmd) => {
         // Find all of the commands associated with speed
         return cmd.action === Action.SetSpeed;
       })
@@ -82,7 +82,7 @@ export namespace Device {
         // sort them
         return a.argument! < b.argument! ? 0 : 1;
       })
-      .map(cmd => {
+      .map((cmd) => {
         // map down to the raw argument values from that command
         return cmd.argument || 0;
       });
@@ -92,11 +92,11 @@ export namespace Device {
 
   export function GXhasToggle(device: Device): boolean {
     const fan = [Action.TogglePower];
-    return device.actions.some(r => fan.includes(r));
+    return device.actions.some((r) => fan.includes(r));
   }
 
   export function FPhasToggle(device: Device): boolean {
     const fan = [Action.TogglePower];
-    return device.actions.some(r => fan.includes(r));
+    return device.actions.some((r) => fan.includes(r));
   }
 }

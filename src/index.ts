@@ -46,7 +46,7 @@ export class BondPlatform {
       Bond.updateDeviceIds(bonds).then(() => {
         that.bonds = bonds;
         that.log(`${that.accessories.length} cached accessories were loaded`);
-        that.bonds.forEach(bond => {
+        that.bonds.forEach((bond) => {
           that.getDevices(bond);
         });
       });
@@ -57,19 +57,19 @@ export class BondPlatform {
     this.log('Getting devices...');
 
     this.log(`${bond.deviceIds.length} devices were found on this Bond.`);
-    const filtered = bond.deviceIds.filter(id => {
+    const filtered = bond.deviceIds.filter((id) => {
       return !this.deviceAdded(id);
     });
 
     this.log(`Attempting to add ${filtered.length} devices that were not previously added.`);
     bond.api
       .getDevices(filtered)
-      .then(devices => {
-        devices.forEach(device => {
+      .then((devices) => {
+        devices.forEach((device) => {
           this.addAccessory(device);
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.log(`Error getting devices: ${error}`);
       });
   }
@@ -205,7 +205,7 @@ export class BondPlatform {
                   this.log(`${accessory.displayName} didn't have dimmer defined. define it now`);
                   dimmer = accessory.addService(hap.Service.Switch, `${accessory.displayName} Dimmer`);
                 }
-                this.setupLightbulbDimmerObserver(bond, device, dimmer, d => bond.api.startDimmer(d));
+                this.setupLightbulbDimmerObserver(bond, device, dimmer, (d) => bond.api.startDimmer(d));
               }
               if (Device.HasSeparateDimmers(device)) {
                 if (dimmerUp === undefined) {
@@ -220,14 +220,14 @@ export class BondPlatform {
                   bond,
                   device,
                   dimmerUp,
-                  d => bond.api.startIncreasingBrightness(d),
+                  (d) => bond.api.startIncreasingBrightness(d),
                   dimmerDown,
                 );
                 this.setupLightbulbDimmerObserver(
                   bond,
                   device,
                   dimmerDown,
-                  d => bond.api.startDecreasingBrightness(d),
+                  (d) => bond.api.startDecreasingBrightness(d),
                   dimmerUp,
                 );
               }
@@ -271,7 +271,7 @@ export class BondPlatform {
   private bondForAccessory(accessory: HAP.Accessory): Bond | undefined {
     const device: Device = accessory.context.device;
     if (this.bonds) {
-      const bond = this.bonds.find(x => x.deviceIds.includes(device.id));
+      const bond = this.bonds.find((x) => x.deviceIds.includes(device.id));
       if (bond === undefined) {
         this.log.error(
           `No Bond found for Accessory: ${accessory.displayName}. This Accessory may have been removed from your Bond but still exists in cachedAccessories.`,
@@ -287,7 +287,7 @@ export class BondPlatform {
 
   private setupLightbulbObservers(bond: Bond, device: Device, bulb: HAP.Service) {
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         if (state.light !== undefined) {
           return state.light === 1 ? true : false;
         } else {
@@ -346,7 +346,7 @@ export class BondPlatform {
     this.debug(device, `min step: ${minStep}, max value: ${maxValue}`);
 
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         if (state.speed !== undefined && state.power === 1) {
           that.debug(device, `speed value: ${state.speed}`);
           const index = values.indexOf(state.speed!) + 1;
@@ -383,7 +383,7 @@ export class BondPlatform {
 
   private setupFanPowerObservers(bond: Bond, device: Device, fan: HAP.Service) {
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         return state.power === 1;
       });
     }
@@ -399,7 +399,7 @@ export class BondPlatform {
 
   private setupFanDirectionObservers(bond: Bond, device: Device, fan: HAP.Service) {
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         if (state.direction !== undefined) {
           return state.direction!;
         } else {
@@ -419,7 +419,7 @@ export class BondPlatform {
 
   private setupGenericObserver(bond: Bond, device: Device, generic: HAP.Service) {
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         return state.power === 1;
       });
     }
@@ -435,7 +435,7 @@ export class BondPlatform {
 
   private setupFireplaceObserver(bond: Bond, device: Device, fireplace: HAP.Service) {
     function get(): Promise<any> {
-      return bond.api.getState(device.id).then(state => {
+      return bond.api.getState(device.id).then((state) => {
         return state.power === 1;
       });
     }
@@ -454,7 +454,7 @@ export class BondPlatform {
   }
 
   private accessoryForIdentifier(id: string): HAP.Accessory {
-    const accessories = this.accessories.filter(acc => {
+    const accessories = this.accessories.filter((acc) => {
       const device: Device = acc.context.device;
       return device.id === id;
     });

@@ -13,7 +13,7 @@ export class Observer {
   ) {
     const char = bulb.getCharacteristic(characteristic);
 
-    get().then(val => {
+    get().then((val) => {
       char.updateValue(val);
     });
 
@@ -45,11 +45,11 @@ export class Observer {
       })
       .on('get', (callback: (arg0: null, arg1: boolean) => void) => {
         get()
-          .then(value => {
+          .then((value) => {
             log(`got value: ${value}`);
             callback(null, value);
           })
-          .catch(error => {
+          .catch((error) => {
             log(`error getting value: ${error}`);
             callback(null, false);
           });

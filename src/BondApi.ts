@@ -32,7 +32,7 @@ export class BondApi {
   public getDeviceIds(): Promise<string[]> {
     const req = this.request(HTTPMethod.GET, this.uri.deviceIds());
     return req.then((json: {}) =>
-      Object.keys(json).filter(x => {
+      Object.keys(json).filter((x) => {
         // Ignore anything that is an empty string or '_'
         return x.length > 0 && x !== '_';
       }),
@@ -40,8 +40,8 @@ export class BondApi {
   }
 
   public getDevices(ids: string[]): Promise<Device[]> {
-    const ps: Array<Promise<Device>> = [];
-    ids.forEach(id => {
+    const ps: Promise<Device>[] = [];
+    ids.forEach((id) => {
       ps.push(this.getDevice(id));
     });
     return Promise.all(ps);
@@ -90,17 +90,17 @@ export class BondApi {
 
   private getDevice(id: string): Promise<Device> {
     const req = this.request(HTTPMethod.GET, this.uri.device(id));
-    return req.then(json => {
+    return req.then((json) => {
       // Set the id since it's not included in the response
       json.id = id;
       // get the properties of the device
-      return this.getProperties(id).then(properties => {
+      return this.getProperties(id).then((properties) => {
         json.properties = properties;
         if (json.commands === undefined) {
           return json;
         } else {
           // commands are only present on Bridge devices.
-          return this.getCommands(id).then(commands => {
+          return this.getCommands(id).then((commands) => {
             json.commands = commands;
             return json;
           });
@@ -112,9 +112,9 @@ export class BondApi {
   // Commands
 
   private getCommands(deviceId: string): Promise<Command[]> {
-    return this.getCommandIds(deviceId).then(ids => {
-      const ps: Array<Promise<Command>> = [];
-      ids.forEach(id => {
+    return this.getCommandIds(deviceId).then((ids) => {
+      const ps: Promise<Command>[] = [];
+      ids.forEach((id) => {
         ps.push(this.getCommand(deviceId, id));
       });
       return Promise.all(ps);
@@ -124,7 +124,7 @@ export class BondApi {
   private getCommandIds(id: string): Promise<string[]> {
     const req = this.request(HTTPMethod.GET, this.uri.commands(id));
     return req.then((json: {}) =>
-      Object.keys(json).filter(x => {
+      Object.keys(json).filter((x) => {
         // Ignore anything that is an empty string or '_'
         return x.length > 0 && x !== '_';
       }),
@@ -139,7 +139,7 @@ export class BondApi {
 
   private getProperties(id: string): Promise<Properties> {
     const req = this.request(HTTPMethod.GET, this.uri.properties(id));
-    return req.then(json => {
+    return req.then((json) => {
       return json;
     });
   }
@@ -163,7 +163,7 @@ export class BondApi {
       simple: false,
       timeout: 10000,
     })
-      .then(json => {
+      .then((json) => {
         if (json !== undefined) {
           this.debug(`Response [${method} ${uri}] - ${JSON.stringify(json)}`);
         } else {
