@@ -162,8 +162,9 @@ export class BondApi {
       json: true,
       simple: false,
       timeout: 10000,
-      retry: 3,
-      factor: 2,
+      retry: 5,
+      delay: 200,
+      factor: 2
     })
       .then((json) => {
         if (json !== undefined) {
