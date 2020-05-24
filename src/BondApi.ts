@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import rp from 'request-promise';
+import rp from 'promise-request-retry';
 import { BondUri } from './BondUri';
 import { Action } from './enum/Action';
 import { HAP, hap } from './homebridge/hap';
@@ -162,6 +162,8 @@ export class BondApi {
       json: true,
       simple: false,
       timeout: 10000,
+      retry: 3,
+      factor: 2,
     })
       .then((json) => {
         if (json !== undefined) {
