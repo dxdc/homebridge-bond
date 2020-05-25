@@ -147,8 +147,9 @@ export class BondApi {
   // Helpers
 
   private request(method: HTTPMethod, uri: string, body: {} = {}): Promise<any> {
-    if (body !== {}) {
-      this.debug(`Request [${method} ${uri}] - body: ${JSON.stringify(body)}`);
+    const bodyStr = JSON.stringify(body);
+    if (bodyStr !== '{}') {
+      this.debug(`Request [${method} ${uri}] - body: ${bodyStr}`);
     } else {
       this.debug(`Request [${method} ${uri}]`);
     }
@@ -164,9 +165,9 @@ export class BondApi {
       timeout: 10000,
       retry: 5,
       delay: 200,
-      factor: 2
+      factor: 2,
     })
-      .then((json) => {
+      .then((json: any) => {
         if (json !== undefined) {
           this.debug(`Response [${method} ${uri}] - ${JSON.stringify(json)}`);
         } else {
