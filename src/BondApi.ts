@@ -1,4 +1,5 @@
 import Promise from 'bluebird';
+// @ts-ignore
 import rp from 'promise-request-retry';
 import { BondUri } from './BondUri';
 import { Action } from './enum/Action';
