@@ -289,7 +289,7 @@ export class BondPlatform {
     function get(): Promise<any> {
       return bond.api.getState(device.id).then((state) => {
         if (state.light !== undefined) {
-          return state.light === 1 ? true : false;
+          return state.light === 1;
         } else {
           return false;
         }
