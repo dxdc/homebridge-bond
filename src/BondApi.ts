@@ -161,14 +161,15 @@ export class BondApi {
       this.debug(`Request [${method} ${uri}]`);
     }
     const uuid = intformat(flakeIdGen.next(), 'hex', { prefix: '18', padstr: '0', size: 16 }); // avoid duplicate action
-    this.debug(`Bond-UUID for request: [${uuid}]`);
+    const bondUuid = uuid.substring(0, 13) + uuid.substring(15); // remove '00' used for datacenter/worker in flakeIdGen
+    this.debug(`Bond-UUID for request: [${bondUuid}]`);
 
     return rp({
       method,
       uri,
       headers: {
         'BOND-Token': this.bondToken,
-        'Bond-UUID': uuid,
+        'Bond-UUID': bondUuid,
       },
       body,
       json: true,
