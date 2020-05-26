@@ -1,6 +1,10 @@
 import Promise from 'bluebird';
 // @ts-ignore
 import rp from 'promise-request-retry';
+import FlakeId from 'flake-idgen';
+// @ts-ignore
+import intformat from 'biguint-format';
+
 import { BondUri } from './BondUri';
 import { Action } from './enum/Action';
 import { HAP, hap } from './homebridge/hap';
@@ -12,6 +16,8 @@ enum HTTPMethod {
   GET = 'GET',
   PUT = 'PUT',
 }
+
+const flakeIdGen = new FlakeId();
 
 export class BondApi {
   private bondToken: string;
@@ -154,11 +160,15 @@ export class BondApi {
     } else {
       this.debug(`Request [${method} ${uri}]`);
     }
+    const uuid = intformat(flakeIdGen.next(), 'hex', { prefix: '18' }); // avoid duplicate action
+    this.debug(`Bond-UUID for request: [${uuid}]`);
+
     return rp({
       method,
       uri,
       headers: {
         'BOND-Token': this.bondToken,
+        'Bond-UUID': uuid,
       },
       body,
       json: true,

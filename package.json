@@ -7,7 +7,9 @@
   },
   "bundleDependencies": false,
   "dependencies": {
+    "biguint-format": "^1.0.2",
     "bluebird": "^3.7.2",
+    "flake-idgen": "^1.4.0",
     "promise-request-retry": "^1.0.2",
     "request": "^2.88.2",
     "request-promise": "^4.2.5"
@@ -15,6 +17,7 @@
   "deprecated": false,
   "description": "A homebridge plugin to control your Bond devices over the v2 API.",
   "devDependencies": {
+    "@types/flake-idgen": "^0.1.30",
     "@types/request-promise": "^4.1.46",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
