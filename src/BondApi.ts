@@ -160,7 +160,7 @@ export class BondApi {
     } else {
       this.debug(`Request [${method} ${uri}]`);
     }
-    const uuid = intformat(flakeIdGen.next(), 'hex', { prefix: '18' }); // avoid duplicate action
+    const uuid = intformat(flakeIdGen.next(), 'hex', { prefix: '18', padstr: '0', size: 16 }); // avoid duplicate action
     this.debug(`Bond-UUID for request: [${uuid}]`);
 
     return rp({
